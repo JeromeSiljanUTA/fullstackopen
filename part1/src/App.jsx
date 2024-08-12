@@ -21,13 +21,31 @@ const Statistics = ({good, neutral, bad}) => {
     return (
 	<div>
 	    <h1>statistics</h1>
-	    <p>good {good}</p>
-	    <p>neutral {neutral}</p>
-	    <p>bad {bad}</p>
-	    <p>all {good + neutral + bad}</p>
-	    <p>positive {100 * good/(good + neutral + bad)}%</p>
+	    <StatisticLine text='good' values={{'good': good, 'neutral': neutral, 'bad': bad}} stat='count'/>
+	    <StatisticLine text='neutral' values={{'good': good, 'neutral': neutral, 'bad': bad}} stat='count'/>
+	    <StatisticLine text='bad' values={{'good': good, 'neutral': neutral, 'bad': bad}} stat='count'/>
+	    <StatisticLine text='all' values={{'good': good, 'neutral': neutral, 'bad': bad}} stat='all'/>
+	    <StatisticLine text='pos' values={{'good': good, 'neutral': neutral, 'bad': bad}} stat='pos'/>
 	</div>
     )
+}
+
+const StatisticLine = ({text, values, stat}) => {
+    if (stat == 'count'){
+	return (
+	    <p>{text} {values[text]}</p>
+	)
+    }
+    else if (stat == 'all'){
+	return (
+	    <p>{text} {Object.values(values).reduce((a, b) => a + b, 0)}</p>
+	)
+    }
+    else if (stat == 'pos'){
+	return (
+	    <p>{text} {100 * values['good']/Object.values(values).reduce((a, b) => a + b, 0)}%</p>
+	)
+    }
 }
 
 const Button = ({text, handler}) => {
