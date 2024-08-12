@@ -21,29 +21,37 @@ const Statistics = ({good, neutral, bad}) => {
     return (
 	<div>
 	    <h1>statistics</h1>
-	    <StatisticLine text='good' values={{'good': good, 'neutral': neutral, 'bad': bad}} stat='count'/>
-	    <StatisticLine text='neutral' values={{'good': good, 'neutral': neutral, 'bad': bad}} stat='count'/>
-	    <StatisticLine text='bad' values={{'good': good, 'neutral': neutral, 'bad': bad}} stat='count'/>
-	    <StatisticLine text='all' values={{'good': good, 'neutral': neutral, 'bad': bad}} stat='all'/>
-	    <StatisticLine text='pos' values={{'good': good, 'neutral': neutral, 'bad': bad}} stat='pos'/>
+	    <table>
+		<StatisticLine text='good' values={{'good': good, 'neutral': neutral, 'bad': bad}} stat='count'/>
+		<StatisticLine text='neutral' values={{'good': good, 'neutral': neutral, 'bad': bad}} stat='count'/>
+		<StatisticLine text='bad' values={{'good': good, 'neutral': neutral, 'bad': bad}} stat='count'/>
+		<StatisticLine text='all' values={{'good': good, 'neutral': neutral, 'bad': bad}} stat='all'/>
+		<StatisticLine text='pos' values={{'good': good, 'neutral': neutral, 'bad': bad}} stat='pos'/>
+	    </table>
 	</div>
     )
 }
 
 const StatisticLine = ({text, values, stat}) => {
-    if (stat == 'count'){
+    if (stat === 'count'){
 	return (
-	    <p>{text} {values[text]}</p>
+	    <tr>
+		<td>{text} {values[text]}</td>
+	    </tr>
 	)
     }
-    else if (stat == 'all'){
+    else if (stat === 'all'){
 	return (
-	    <p>{text} {Object.values(values).reduce((a, b) => a + b, 0)}</p>
+	    <tr>
+		<td>{text} {Object.values(values).reduce((a, b) => a + b, 0)}</td>
+	    </tr>
 	)
     }
-    else if (stat == 'pos'){
+    else if (stat === 'pos'){
 	return (
-	    <p>{text} {100 * values['good']/Object.values(values).reduce((a, b) => a + b, 0)}%</p>
+	    <tr>
+		<td>{text} {100 * values['good']/Object.values(values).reduce((a, b) => a + b, 0)}%</td>
+	    </tr>
 	)
     }
 }
