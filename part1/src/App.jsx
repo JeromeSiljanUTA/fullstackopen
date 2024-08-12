@@ -20,39 +20,42 @@ const App = () => {
 	<div>
 	    <Header course={course.name} />
 	    <Content parts={course.parts} />
+	    <Total parts={course.parts} />
 	</div>
     )
 }
 
-const Header = (props) => {
+const Header = ({course}) => {
     return (
-	<h1>{props.course}</h1>
+	<h1>{course}</h1>
     )
 }
 
-const Content = (props) => {
+const Content = ({parts}) => {
     return (
 	<div>
-	    <Part part_obj={props['parts'][0]} />
-	    <Part part_obj={props['parts'][1]} />
-	    <Part part_obj={props['parts'][2]} />
+	    <Part part_obj={parts[0]} />
+	    <Part part_obj={parts[1]} />
+	    <Part part_obj={parts[2]} />
 	</div>
     )
 }
 
-const Part = (props) => {
-    const part_obj = props['part_obj']
+const Part = ({part_obj: {name, exercises}}) => {
     return (
 	<p>
-	    {part_obj.name} {part_obj.exercises}
+	    {name} {exercises}
 	</p>
     )
 }
 
-const Total = (props) => {
+const Total = ({parts}) => {
+    const total_exercises = parts.map(part => part.exercises).reduce(
+	(accumulator, element) => accumulator + element
+    );
     return (
 	<p>
-	    Number of exercises {props.exercises1 + props.exercises2 + props.exercises3}
+	    Number of exercises {total_exercises}
 	</p>
     )
 }
