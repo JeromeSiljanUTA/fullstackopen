@@ -1,64 +1,35 @@
+import { useState } from 'react'
+
 const App = () => {
-    const course = {
-	name: 'Half Stack application development',
-	parts: [
-	    {
-		name: 'Fundamentals of React',
-		exercises: 10
-	    },
-	    {
-		name: 'Using props to pass data',
-		exercises: 7
-	    },
-	    {
-		name: 'State of a component',
-		exercises: 14
-	    }
-	]
-    }
+    const [good, setGood] = useState(0)
+    const [neutral, setNeutral] = useState(0)
+    const [bad, setBad] = useState(0)
+
     return (
 	<div>
-	    <Header course={course.name} />
-	    <Content parts={course.parts} />
-	    <Total parts={course.parts} />
+	    <h1>give feedback</h1>
+	    <Button text='good' handler={() => setGood(good + 1)}/>
+	    <Button text='neutral' handler={() => setNeutral(neutral + 1)}/>
+	    <Button text='bad' handler={() => setBad(bad + 1)}/>
+
+	    <h1>statistics</h1>
+	    
+	    <p>good {good}</p>
+	    <p>neutral {neutral}</p>
+	    <p>bad {bad}</p>
+	    <p>all {good + neutral + bad}</p>
+	    <p>positive {100 * good/(good + neutral + bad)}%</p>
+	    
 	</div>
     )
 }
 
-const Header = ({course}) => {
+const Button = ({text, handler}) => {
     return (
-	<h1>{course}</h1>
+	<button onClick={handler}>
+	    {text}
+	</button>
     )
 }
-
-const Content = ({parts}) => {
-    return (
-	<div>
-	    <Part part_obj={parts[0]} />
-	    <Part part_obj={parts[1]} />
-	    <Part part_obj={parts[2]} />
-	</div>
-    )
-}
-
-const Part = ({part_obj: {name, exercises}}) => {
-    return (
-	<p>
-	    {name} {exercises}
-	</p>
-    )
-}
-
-const Total = ({parts}) => {
-    const total_exercises = parts.map(part => part.exercises).reduce(
-	(accumulator, element) => accumulator + element
-    );
-    return (
-	<p>
-	    Number of exercises {total_exercises}
-	</p>
-    )
-}
-
 
 export default App
