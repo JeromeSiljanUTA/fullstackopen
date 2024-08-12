@@ -12,14 +12,20 @@ const App = () => {
 	    <Button text='neutral' handler={() => setNeutral(neutral + 1)}/>
 	    <Button text='bad' handler={() => setBad(bad + 1)}/>
 
+	    <Statistics good={good} neutral={neutral} bad={bad} />
+	</div>
+    )
+}
+
+const Statistics = ({good, neutral, bad}) => {
+    return (
+	<div>
 	    <h1>statistics</h1>
-	    
 	    <p>good {good}</p>
 	    <p>neutral {neutral}</p>
 	    <p>bad {bad}</p>
 	    <p>all {good + neutral + bad}</p>
 	    <p>positive {100 * good/(good + neutral + bad)}%</p>
-	    
 	</div>
     )
 }
