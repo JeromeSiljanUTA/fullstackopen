@@ -14,19 +14,35 @@ const App = () => {
 
     const [selected, setSelected] = useState(0)
     const [points, setPoints] = useState(Array(anecdotes.length).fill(0))
-    
+
     return (
 	<div>
+	    <Header text='Anecdote of the day' />
 	    {anecdotes[selected]}
-
 	    <br></br>
-
 	    <Button len={anecdotes.length} setSelected={setSelected} points={points} setPoints={setPoints}/>
-
 	    <Vote len={anecdotes.length} selected={selected} points={points} setPoints={setPoints}/>
 
-	    <p>has {points[selected]} votes </p>
+	    <Header text='Anecdote with the most votes' />
+	    <MaxVotes points={points} anecdotes={anecdotes} />
+
 	</div>
+    )
+}
+const MaxVotes = ({points, anecdotes}) => {
+    const max_idx = (points.indexOf(Math.max(...points)))
+    return (
+	<div>
+	    {anecdotes[max_idx]}
+	    <br></br>
+	    has {Math.max(...points)} votes
+	</div>
+    )
+}
+
+const Header = ({text}) => {
+    return (
+	<h1>{text}</h1>
     )
 }
 
@@ -38,6 +54,7 @@ const Vote = ({len, selected, points, setPoints}) => {
 	console.log(selected)
 	console.log(tmp_points)
     }
+
     return (
 	<button onClick={onClick}>vote</button>
     )
