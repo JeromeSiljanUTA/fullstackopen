@@ -11,8 +11,9 @@ const App = () => {
 	'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
 	'The only way to go fast, is to go well.'
     ]
-    
+
     const [selected, setSelected] = useState(0)
+    const [points, setPoints] = useState(Array(anecdotes.length).fill(0))
     
     return (
 	<div>
@@ -20,14 +21,36 @@ const App = () => {
 
 	    <br></br>
 
-	    <Button len={anecdotes.length} setSelected={setSelected} />
+	    <Button len={anecdotes.length} setSelected={setSelected} points={points} setPoints={setPoints}/>
+
+	    <Vote len={anecdotes.length} selected={selected} points={points} setPoints={setPoints}/>
+
+	    <p>has {points[selected]} votes </p>
 	</div>
     )
 }
 
-const Button = ({len, setSelected}) => {
+const Vote = ({len, selected, points, setPoints}) => {
+    const onClick = () => {
+	const tmp_points = [...points]
+	tmp_points[selected] += 1
+	setPoints(tmp_points)
+	console.log(selected)
+	console.log(tmp_points)
+    }
     return (
-	<button onClick={() => setSelected(Math.floor(Math.random() * len))}>next anecdote</button>
+	<button onClick={onClick}>vote</button>
+    )
+}
+
+const Button = ({len, setSelected, points, setPoints}) => {
+    const onClick = () => {
+	const anectdote_idx = Math.floor(Math.random() * len)
+	setSelected(anectdote_idx)
+	console.log(anectdote_idx)
+    }
+    return (
+	<button onClick={onClick}>next anecdote</button>
     )
 }
 
