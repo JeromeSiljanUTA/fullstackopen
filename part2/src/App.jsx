@@ -3,11 +3,14 @@ import { useState } from "react";
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
+  const [newNumber, setNewNumber] = useState("");
+  const [newFilter, setNewFilter] = useState("");
 
   const handleSubmission = (event) => {
     event.preventDefault();
     const personObj = {
       name: newName,
+      number: newNumber,
     };
 
     // Check if name already in phonebook
@@ -18,36 +21,90 @@ const App = () => {
     }
 
     setNewName("");
+    setNewNumber("");
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={handleSubmission}>
-        <div>
-          name:{" "}
-          <input
-            value={newName}
-            onChange={(event) => setNewName(event.target.value)}
-          />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <Filter newFilter={newFilter} setNewFilter={setNewFilter} />
+      <h2>Add a new</h2>
+      <PersonForm
+        newName={newName}
+        setNewName={setNewName}
+        newNumber={newNumber}
+        setNewNumber={setNewNumber}
+        handleSubmission={handleSubmission}
+      />
       <h2>Numbers</h2>
-      <Persons persons={persons} />
+      <Persons persons={persons} newFilter={newFilter} />
     </div>
   );
 };
 
-const Persons = ({ persons }) => {
+const Persons = ({ persons, newFilter }) => {
+  const filteredPersons = persons.filter((person) =>
+    person.name.toLowerCase().includes(newFilter),
+  );
+
   return (
     <ul>
-      {persons.map((person) => (
-        <li key={person.name}>{person.name}</li>
+      {filteredPersons.map((person) => (
+        <li key={person.name}>
+          {person.name}: {person.number}
+        </li>
       ))}
     </ul>
+  );
+};
+
+const Filter = ({ newFilter, setNewFilter }) => {
+  return (
+    <div>
+      filter shown with
+      <input
+        value={newFilter}
+        onChange={(event) => setNewFilter(event.target.value)}
+      />
+    </div>
+  );
+};
+
+const PersonForm = ({
+  newName,
+  setNewName,
+  newNumber,
+  setNewNumber,
+  handleSubmission,
+}) => {
+  return (
+    <form onSubmit={handleSubmission}>
+      <table>
+        <tbody>
+          <tr>
+            <th>name:</th>
+            <th>
+              <input
+                value={newName}
+                onChange={(event) => setNewName(event.target.value)}
+              />
+            </th>
+          </tr>
+          <tr>
+            <th>phone number:</th>
+            <th>
+              <input
+                value={newNumber}
+                onChange={(event) => setNewNumber(event.target.value)}
+              />
+            </th>
+          </tr>
+        </tbody>
+      </table>
+      <div>
+        <button type="submit">add</button>
+      </div>
+    </form>
   );
 };
 
