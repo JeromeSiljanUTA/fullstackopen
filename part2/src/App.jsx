@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 const App = () => {
-  const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
 
   const handleSubmission = (event) => {
@@ -9,7 +9,14 @@ const App = () => {
     const personObj = {
       name: newName,
     };
-    setPersons(persons.concat(personObj));
+
+    // Check if name already in phonebook
+    if (persons.map((person) => person.name).includes(newName)) {
+      alert(`"${newName}" already in phonebook`);
+    } else {
+      setPersons(persons.concat(personObj));
+    }
+
     setNewName("");
   };
 
