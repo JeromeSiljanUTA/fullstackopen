@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 
+import personService from "./services/persons.js";
+const { getAllPersons, addPerson } = personService;
+
 import axios from "axios";
 
 const App = () => {
@@ -9,13 +12,10 @@ const App = () => {
   const [newFilter, setNewFilter] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
+    getAllPersons().then((response) => {
       setPersons(response.data);
     });
   }, []);
-
-  console.log("render", persons.length, "persons");
-  console.log(persons);
 
   const handleSubmission = (event) => {
     event.preventDefault();
@@ -28,7 +28,10 @@ const App = () => {
     if (persons.map((person) => person.name).includes(newName)) {
       alert(`"${newName}" already in phonebook`);
     } else {
-      setPersons(persons.concat(personObj));
+      addPerson(personObj).then((response) => {
+        setPersons(persons.concat(personObj));
+        console.log(response);
+      });
     }
 
     setNewName("");
