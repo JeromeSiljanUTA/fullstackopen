@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import personService from "./services/persons.js";
-const { getAllPersons, addPerson } = personService;
+const { getAllPersons, addPerson, delPerson } = personService;
 
 import axios from "axios";
 
@@ -20,6 +20,7 @@ const App = () => {
   const handleSubmission = (event) => {
     event.preventDefault();
     const personObj = {
+      id: newName,
       name: newName,
       number: newNumber,
     };
@@ -52,21 +53,32 @@ const App = () => {
         handleSubmission={handleSubmission}
       />
       <h2>Numbers</h2>
-      <Persons persons={persons} newFilter={newFilter} />
+      <Persons
+        persons={persons}
+        setPersons={setPersons}
+        newFilter={newFilter}
+      />
     </div>
   );
 };
 
-const Persons = ({ persons, newFilter }) => {
+const Persons = ({ persons, newFilter, setPersons }) => {
   const filteredPersons = persons.filter((person) =>
     person.name.toLowerCase().includes(newFilter),
   );
+
+  const deleteOnClick = (person) => {
+    delPerson(person.id).then((response) => {
+      setPersons(persons.filter((x) => x.id != person.id));
+    });
+  };
 
   return (
     <ul>
       {filteredPersons.map((person) => (
         <li key={person.name}>
-          {person.name}: {person.number}
+          {person.name}: {person.number}{" "}
+          <button onClick={() => deleteOnClick(person)}>Delete</button>
         </li>
       ))}
     </ul>

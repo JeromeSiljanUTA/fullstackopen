@@ -10,4 +10,8 @@ const addPerson = (personObj) => {
   return axios.post(baseUrl, personObj);
 };
 
-export default { getAllPersons, addPerson };
+const delPerson = (personId) => {
+  return axios.delete(`${baseUrl}/${personId}`);
+};
+
+export default { getAllPersons, addPerson, delPerson };
