@@ -28,6 +28,12 @@ app.get("/", (request, response) => {
   response.send("<h1>Ollo</h1>");
 });
 
+app.get("/info", (request, response) => {
+  const resp = `<p>Phonebook has info for ${persons.length} people</p>
+    <p>${Date()}</p>`;
+  response.send(resp);
+});
+
 app.get("/api/persons", (request, response) => {
   response.json(persons);
 });
