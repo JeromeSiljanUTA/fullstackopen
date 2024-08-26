@@ -1,14 +1,17 @@
-const express = require("express");
+import express from "express";
 const app = express();
 app.use(express.json());
 
-var morgan = require("morgan");
+import morgan from "morgan";
 
 morgan.token("body", (request, _) => {
   return JSON.stringify(request.body);
 });
 
 app.use(morgan(":method :url :status - :response-time ms :req[header] :body"));
+
+import cors from "cors";
+app.use(cors());
 
 let persons = [
   {
