@@ -2,6 +2,14 @@ const express = require("express");
 const app = express();
 app.use(express.json());
 
+var morgan = require("morgan");
+
+morgan.token("body", (request, _) => {
+  return JSON.stringify(request.body);
+});
+
+app.use(morgan(":method :url :status - :response-time ms :req[header] :body"));
+
 let persons = [
   {
     id: "1",
@@ -39,7 +47,6 @@ app.get("/api/persons/:id", (request, response) => {
   if (!request.params.id) {
     response.json(persons);
   } else {
-    console.log(persons);
     response.json(persons.find((person) => person.id == request.params.id));
   }
 });
@@ -70,7 +77,6 @@ app.post("/api/persons/", (request, response) => {
       },
     ];
 
-    console.log(persons);
     response.status(200).end();
   }
 });
