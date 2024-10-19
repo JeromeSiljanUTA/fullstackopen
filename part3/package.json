@@ -22,6 +22,7 @@
     "vite": "^5.4.2"
   },
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.5.8",
     "vite": "^5.4.1"
   }
 }
