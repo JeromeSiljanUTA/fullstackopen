@@ -38,7 +38,6 @@ let persons = [
 ];
 
 app.get("/", (_, response) => {
-  console.log("ollo from /");
   response.send("<h1>Ollo</h1>");
 });
 
@@ -61,7 +60,7 @@ app.get("/api/persons/", (_, response) => {
 });
 
 app.delete("/api/persons/:id", (request, response) => {
-  persons = persons.filter((person) => person.id !== request.params.id);
+  persons = persons.filter((person) => person.id != request.params.id);
   response.status(204).end();
 });
 
@@ -76,7 +75,7 @@ app.post("/api/persons/", (request, response) => {
     persons = [
       ...persons,
       {
-        id: Math.floor(Math.random() * 10000),
+        id: Math.floor(Math.random() * 10000).toString(),
         name: request.body.name,
         number: request.body.number,
       },
