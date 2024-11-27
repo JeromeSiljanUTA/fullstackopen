@@ -1,6 +1,7 @@
 import express from "express";
 const app = express();
 app.use(express.json());
+app.use(express.static("dist"));
 
 import morgan from "morgan";
 
@@ -37,6 +38,7 @@ let persons = [
 ];
 
 app.get("/", (_, response) => {
+  console.log("ollo from /");
   response.send("<h1>Ollo</h1>");
 });
 
