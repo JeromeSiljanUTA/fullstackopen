@@ -66,7 +66,7 @@ const App = () => {
 
 const Persons = ({ persons, newFilter, setPersons }) => {
   const filteredPersons = persons.filter((person) =>
-    person.name.toLowerCase().includes(newFilter),
+    person.name.toLowerCase().includes(newFilter.toLowerCase()),
   );
 
   const deleteOnClick = (person) => {
