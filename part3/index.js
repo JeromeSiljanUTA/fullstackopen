@@ -1,41 +1,22 @@
 import express from "express";
+import morgan from "morgan";
+import cors from "cors";
+import { Person } from "./models/persons.js";
+
 const app = express();
 app.use(express.json());
 app.use(express.static("dist"));
 
-import morgan from "morgan";
-
 morgan.token("body", (request, _) => {
   return JSON.stringify(request.body);
 });
-
 app.use(morgan(":method :url :status - :response-time ms :req[header] :body"));
 
-import cors from "cors";
 app.use(cors());
 
-let persons = [
-  {
-    id: "1",
-    name: "Arto Hellas",
-    number: "040-123456",
-  },
-  {
-    id: "2",
-    name: "Ada Lovelace",
-    number: "39-44-5323523",
-  },
-  {
-    id: "3",
-    name: "Dan Abramov",
-    number: "12-43-234345",
-  },
-  {
-    id: "4",
-    name: "Mary Poppendieck",
-    number: "39-23-6423122",
-  },
-];
+const url = process.env.MONGODB_URI;
+
+let persons = [];
 
 app.get("/", (_, response) => {
   response.send("<h1>Ollo</h1>");
@@ -56,7 +37,10 @@ app.get("/api/persons/:id", (request, response) => {
 });
 
 app.get("/api/persons/", (_, response) => {
-  response.json(persons);
+  Person.find().then((persons) => {
+    response.json(persons);
+    console.log("persons", persons);
+  });
 });
 
 app.delete("/api/persons/:id", (request, response) => {
