@@ -4,10 +4,11 @@ import cors from "cors";
 import { Person } from "./models/persons.js";
 
 const app = express();
-app.use(express.json());
 
 // serve up dist directory on /
 app.use(express.static("dist"));
+
+app.use(express.json());
 
 morgan.token("body", (request, _) => {
   return JSON.stringify(request.body);
@@ -42,7 +43,7 @@ app.delete("/api/persons/:id", (request, response) => {
   query.findOneAndDelete().then((person) => response.status(204).end());
 });
 
-app.post("/api/persons/", (request, response) => {
+app.post("/api/persons/", (request, response, next) => {
   Person.create({
     name: request.body.name,
     number: request.body.number,
@@ -50,12 +51,19 @@ app.post("/api/persons/", (request, response) => {
     .then((mongoResponse) => {
       response.status(200).end();
     })
-    .catch((err) => {
-      response.status(400).json({ error: err.message });
-    });
+    .catch((err) => next(err));
 });
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+const errorHandler = (error, request, response, next) => {
+  return response.status(400).json({ error: error.message });
+
+  next(error);
+};
+
+// this has to be the last loaded middleware, also all the routes should be registered before this!
+app.use(errorHandler);
