@@ -30,7 +30,9 @@ app.get("/info", (_, response) => {
 
 app.get("/api/persons/:id", (request, response) => {
   if (!request.params.id) {
-    response.json(persons);
+    Person.find().then((persons) => {
+      response.json(persons);
+    });
   } else {
     response.json(persons.find((person) => person.id == request.params.id));
   }
@@ -39,13 +41,13 @@ app.get("/api/persons/:id", (request, response) => {
 app.get("/api/persons/", (_, response) => {
   Person.find().then((persons) => {
     response.json(persons);
-    console.log("persons", persons);
   });
 });
 
 app.delete("/api/persons/:id", (request, response) => {
-  persons = persons.filter((person) => person.id != request.params.id);
-  response.status(204).end();
+  console.log("please remove person with id", request.params.id);
+  const query = Person.where({ _id: request.params.id });
+  query.findOneAndDelete().then((persons) => response.status(204).end());
 });
 
 app.post("/api/persons/", (request, response) => {
@@ -56,14 +58,14 @@ app.post("/api/persons/", (request, response) => {
   } else if (persons.find((person) => person.name === request.body.name)) {
     response.status(400).json({ error: "name already in phonebook" });
   } else {
-    persons = [
-      ...persons,
-      {
-        id: Math.floor(Math.random() * 10000).toString(),
-        name: request.body.name,
-        number: request.body.number,
-      },
-    ];
+    // persons = [
+    //   ...persons,
+    //   {
+    //     id: Math.floor(Math.random() * 10000).toString(),
+    //     name: request.body.name,
+    //     number: request.body.number,
+    //   },
+    // ];
 
     response.status(200).end();
   }
