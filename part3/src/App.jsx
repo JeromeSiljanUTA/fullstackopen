@@ -3,7 +3,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 
 import personService from "./services/persons.js";
-const { getAllPersons, addPerson, delPerson } = personService;
+const { getAllPersons, addPerson, updatePerson, delPerson } = personService;
 
 import axios from "axios";
 
@@ -29,7 +29,20 @@ const App = () => {
 
     // Check if name already in phonebook
     if (persons.map((person) => person.name).includes(newName)) {
-      alert(`"${newName}" already in phonebook`);
+      const targetId = persons.filter((x) => x.name === newName)[0].id;
+
+      const updatedPersonObj = {
+        ...personObj,
+        id: targetId,
+      };
+
+      setPersons(
+        persons.map((person) =>
+          person.id === targetId ? updatedPersonObj : person,
+        ),
+      );
+
+      updatePerson(updatedPersonObj);
     } else {
       addPerson(personObj).then((response) => {
         setPersons(persons.concat(personObj));
